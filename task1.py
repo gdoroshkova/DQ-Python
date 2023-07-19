@@ -40,9 +40,16 @@ for i in range(0, len(random_numbers)):
         sum_of_odd = sum_of_odd + random_numbers[i]
         amount_of_odd = amount_of_odd + 1
 # print both average result in console
-# The format() insert values inside the string's placeholder that defined using {}
-# The round() rounds average values to 2 digits
-print("The average for even numbers is: {}. The average for odd number is: {}".format(round(sum_of_even / amount_of_even, 2), round(sum_of_odd / amount_of_odd, 2)))
+# If there aren't even or odd numbers in the list, an exception is generated due to division by 0 and except block is performed
+try:
+    # calculate average values
+    # The round() rounds average values to 2 digits
+    average_even = round(sum_of_even / amount_of_even, 2)
+    average_odd = round(sum_of_odd / amount_of_odd, 2)
+    # The format() insert values inside the string's placeholder that defined using {}
+    print("The average for even numbers is: {}. The average for odd number is: {}".format(average_even, average_odd))
+except ZeroDivisionError:
+    print("Error: Division by 0")
 
 
 
