@@ -2,6 +2,7 @@ import re
 from operator import index
 
 # create text string with text from the task, use """ for multiline string
+
 text = """homEwork:
 	tHis iz your homeWork, copy these Text to variable. 
 	You NEED TO normalize it fROM letter CASEs point oF View. also, create one MORE senTENCE witH LAST WoRDS of each existING SENtence and add it to the END OF this Paragraph.
@@ -33,6 +34,12 @@ def create_add_string(text):
     text = '. '.join(list_of_correct_strings)
     return text.replace('paragraph. ', 'paragraph. ' + last_string.rstrip().capitalize() + '. ')
 
+def case_normalization(text):
+    sentences = []
+    for sentence in text.lower().split('. '):
+        sentences.append(sentence.capitalize())
+    return '. '.join(sentences)
+
 # whitespaces_counter function counts and returns number of white spaces in the text
 def whitespaces_counter(text):
     counter = 0
@@ -41,17 +48,18 @@ def whitespaces_counter(text):
             counter = counter+1
     return counter
 
-# call functions in turn and transformed the text
-# save transformed text into transformed_text variable
-transformed_text = create_add_string(correct_misspelling(text_to_lower_case(text), ' iz ', ' is '))
-# print transformed text into console
-print(f'Transformed text: {transformed_text}')
+if __name__ == '__main__':
+    # call functions in turn and transformed the text
+    # save transformed text into transformed_text variable
+    transformed_text = create_add_string(correct_misspelling(text_to_lower_case(text), ' iz ', ' is '))
+    # print transformed text into console
+    print(f'Transformed text: {transformed_text}')
 
-print("_____________________________________________________")
+    print("_____________________________________________________")
 
-# call whitespaces_counter function with the transformed_text argument
-# print it into the console
-print(f'The number of the whitespaces in the correct text: {whitespaces_counter(transformed_text)}')
+    # call whitespaces_counter function with the transformed_text argument
+    # print it into the console
+    print(f'The number of the whitespaces in the correct text: {whitespaces_counter(transformed_text)}')
 
 
 
