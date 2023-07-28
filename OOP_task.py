@@ -1,5 +1,5 @@
 import datetime
-
+from task10_DB_API import DBConnection
 
 # create Publication class
 class Publication:
@@ -33,7 +33,7 @@ class News(Publication):
 class Advertising(Publication):
     # Constructor
     def __init__(self, text, expiration_date):
-        super().__init__("Private Ad", text)
+        super().__init__("Advertising", text)
         self.expiration_date = datetime.datetime.strptime(expiration_date, "%m/%d/%Y")
         # Calculate the number of days left until the expiration_date and save it in days_left
         days_left = (self.expiration_date - datetime.datetime.now()).days
@@ -47,7 +47,7 @@ class Advertising(Publication):
 # Create Motivator class that inherits Publication class
 class Motivator(Publication):
     # Constructor
-    def __init__(self, text, audience='All'):
+    def __init__(self, text, audience):
         super().__init__("Motivation", text)
         self.text = text
         self.audience = audience
@@ -64,37 +64,37 @@ class UserInteraction:
     def __init__(self):
         self.publications = []
 
-    def add_publication(self, publication_type, text, city=None, expiration_date=None, audience=None):
+    def add_publication(self, text, city=None, expiration_date=None, audience=None):
         publication = None
-        if publication_type == 'News':
+        if publication_type == "News":
             publication = News(text, city)
-        elif publication_type == 'Advertising':
+        elif publication_type == "Advertising":
             publication = Advertising(text, expiration_date)
-        elif publication_type == 'Motivation':
+        elif publication_type == "Motivation":
             publication = Motivator(text, audience)
         if publication:
-            self.publish_record(publication.formatting())
+            self.publish_record(publication)
 
     # add_news() method allows to add news
     def add_news(self):
         # prompt the user to enter news text and city
         text = input("Enter news text: ")
         city = input("Enter city: ")
-        news = self.add_publication("News", text=text, city=city)
+        news = self.add_publication(text=text, city=city)
 
     # add_advertising() method allows to add advertising
     def add_advertising(self):
         # prompt the user to enter advertising text and expiration_date_input
         text = input("Enter advertising text: ")
         expiration_date = input("Enter expiration date (mm/dd/YYYY): ")
-        ad = self.add_publication("Advertising", text=text, expiration_date=expiration_date)
+        ad = self.add_publication(text=text, expiration_date=expiration_date)
 
     # add_motivator() method allows to add motivation
     def add_motivator(self):
         # prompt the user to enter motivation text and audience
         text = input("Enter motivation: ")
         audience = input("Enter goal audience: ")
-        motivation = self.add_publication("Motivation", text=text, audience=audience)
+        motivation = self.add_publication(text=text, audience=audience)
 
     # publish_record() method publishes records
     # record parameter is a publication
@@ -111,10 +111,22 @@ class UserInteraction:
         with open("publication.txt", "a") as file:
             # run through each record in the publication list
             for record in self.publications:
-                file.write(record + "\n")
+                file.write(record.formatting() + "\n")
         self.publications = []
         print("Records saved to file successfully!")
 
+    # save_to_db() method saves the publications entered by user to DB
+    def save_to_db(self):
+        # create object of DBConnection class, that is imported from task10_DB_API.py
+        dbcon = DBConnection()
+        for record in self.publications:
+            if record.publication_type == "News":
+                # call insert() method of DBConnection class, that inserted record (if it doesn't exist) to the table according to the fields
+                dbcon.insert('news', record.text, record.city, record.publication_date)
+            elif record.publication_type == "Advertising":
+                dbcon.insert('advertising', record.text, record.expiration_date, record.days_left)
+            elif record.publication_type == "Motivation":
+                dbcon.insert('motivations', record.text, record.audience, record.publication_date)
 
 if __name__ == '__main__':
     # Create object of UserInteraction class to interact with the UserInteraction methods and manage publications
@@ -127,19 +139,25 @@ if __name__ == '__main__':
         print("2. Add Advertising")
         print("3. Add Motivator")
         print("4. Save Publication to File")
-        print("5. Exit")
+        print("5. Save Publication to Database")
+        print("6.Exit")
         # Prompt the user to enter choice
-        menu_point = input("Select publication type (1|2|3), Save Publication (4) or Exit (5): ")
+        menu_point = input("Select publication type (1|2|3), Save Publication to file (4) or Save Publication to DB (5) or Exit (6): ")
         # Based on the user's input use if-elif-else statements to call the corresponding methods of the UserInteraction class
         if menu_point == '1':
+            publication_type = 'News'
             user_interaction.add_news()
         elif menu_point == '2':
+            publication_type = 'Advertising'
             user_interaction.add_advertising()
         elif menu_point == '3':
+            publication_type = 'Motivation'
             user_interaction.add_motivator()
         elif menu_point == '4':
             user_interaction.save_publication()
         elif menu_point == '5':
+            user_interaction.save_to_db()
+        elif menu_point == '6':
             break
         else:
             print("The entered data is incorrect. Please try again!")
