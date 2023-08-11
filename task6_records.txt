@@ -1,0 +1,12 @@
+**********
+News
+text: first news from File. news content
+city: Grodno
+**********
+Private Ad
+text: first advertising added from file
+expiration_date: 07/30/2023
+**********
+Motivation
+text: motivation from file. jj, G;lk
+audience: adult
