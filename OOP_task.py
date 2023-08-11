@@ -64,7 +64,7 @@ class UserInteraction:
     def __init__(self):
         self.publications = []
 
-    def add_publication(self, text, city=None, expiration_date=None, audience=None):
+    def add_publication(self, publication_type, text, city=None, expiration_date=None, audience=None):
         publication = None
         if publication_type == "News":
             publication = News(text, city)
@@ -80,21 +80,21 @@ class UserInteraction:
         # prompt the user to enter news text and city
         text = input("Enter news text: ")
         city = input("Enter city: ")
-        news = self.add_publication(text=text, city=city)
+        news = self.add_publication("News", text=text, city=city)
 
     # add_advertising() method allows to add advertising
     def add_advertising(self):
         # prompt the user to enter advertising text and expiration_date_input
         text = input("Enter advertising text: ")
         expiration_date = input("Enter expiration date (mm/dd/YYYY): ")
-        ad = self.add_publication(text=text, expiration_date=expiration_date)
+        ad = self.add_publication("Advertising", text=text, expiration_date=expiration_date)
 
     # add_motivator() method allows to add motivation
     def add_motivator(self):
         # prompt the user to enter motivation text and audience
         text = input("Enter motivation: ")
         audience = input("Enter goal audience: ")
-        motivation = self.add_publication(text=text, audience=audience)
+        motivation = self.add_publication("Motivation", text=text, audience=audience)
 
     # publish_record() method publishes records
     # record parameter is a publication
@@ -140,7 +140,7 @@ if __name__ == '__main__':
         print("3. Add Motivator")
         print("4. Save Publication to File")
         print("5. Save Publication to Database")
-        print("6.Exit")
+        print("6. Exit")
         # Prompt the user to enter choice
         menu_point = input("Select publication type (1|2|3), Save Publication to file (4) or Save Publication to DB (5) or Exit (6): ")
         # Based on the user's input use if-elif-else statements to call the corresponding methods of the UserInteraction class
@@ -161,5 +161,3 @@ if __name__ == '__main__':
             break
         else:
             print("The entered data is incorrect. Please try again!")
-
-
