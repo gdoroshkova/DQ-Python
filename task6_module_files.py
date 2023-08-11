@@ -3,8 +3,9 @@ import sys
 from OOP_task import UserInteraction
 from function_task3 import case_normalization
 
+
 class ImportPublications:
-    def __init__(self, file_path="C:\\Users\Halina_Darashkova\PycharmProjects\DQ-Python\\task6_records.txt"):
+    def __init__(self, file_path="task6_records.txt"):
         self.file_path = file_path
         self.records = []
         self.user_interaction = UserInteraction()
