@@ -1,5 +1,6 @@
 import datetime
 from task10_DB_API import DBConnection
+from task7_csv import PublicationStatistics
 
 # create Publication class
 class Publication:
@@ -63,6 +64,7 @@ class UserInteraction:
     # Constructor
     def __init__(self):
         self.publications = []
+        self.stat_publ = PublicationStatistics()
 
     def add_publication(self, publication_type, text, city=None, expiration_date=None, audience=None):
         publication = None
@@ -114,6 +116,7 @@ class UserInteraction:
                 file.write(record.formatting() + "\n")
         self.publications = []
         print("Records saved to file successfully!")
+        self.stat_publ.create_csv_files()
 
     # save_to_db() method saves the publications entered by user to DB
     def save_to_db(self):
