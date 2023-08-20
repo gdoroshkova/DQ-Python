@@ -75,4 +75,4 @@ class PublicationStatistics:
         self.write_csv_word_count(self.counter(words_of_text))
         letter_of_text = self.counter(self.split_text_by_letters(text))
         self.write_csv_letter_count(letter_of_text)
-        return print("csv files are created!")
+        return print("CSV files were recreated successfully!")
