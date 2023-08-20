@@ -103,7 +103,6 @@ class UserInteraction:
     def publish_record(self, record):
         # publications.append() - add publication to the list of publications
         self.publications.append(record)
-        print("Record published successfully!")
 
     # save_publication() method saves the publications to a file named "publication.txt"
     def save_publication(self):
@@ -115,8 +114,9 @@ class UserInteraction:
             for record in self.publications:
                 file.write(record.formatting() + "\n")
         self.publications = []
-        print("Records saved to file successfully!")
+        print("Record is saved successfully!")
         self.stat_publ.create_csv_files()
+        self.save_to_db()
 
     # save_to_db() method saves the publications entered by user to DB
     def save_to_db(self):
@@ -141,26 +141,23 @@ if __name__ == '__main__':
         print("1. Add News")
         print("2. Add Advertising")
         print("3. Add Motivator")
-        print("4. Save Publication to File")
-        print("5. Save Publication to Database")
-        print("6. Exit")
+        print("4. Exit")
         # Prompt the user to enter choice
-        menu_point = input("Select publication type (1|2|3), Save Publication to file (4) or Save Publication to DB (5) or Exit (6): ")
+        menu_point = input("Select what publication type you can add (1|2|3) or Exit (4): ")
         # Based on the user's input use if-elif-else statements to call the corresponding methods of the UserInteraction class
         if menu_point == '1':
             publication_type = 'News'
             user_interaction.add_news()
+            user_interaction.save_publication()
         elif menu_point == '2':
             publication_type = 'Advertising'
             user_interaction.add_advertising()
+            user_interaction.save_publication()
         elif menu_point == '3':
             publication_type = 'Motivation'
             user_interaction.add_motivator()
-        elif menu_point == '4':
             user_interaction.save_publication()
-        elif menu_point == '5':
-            user_interaction.save_to_db()
-        elif menu_point == '6':
+        elif menu_point == '4':
             break
         else:
             print("The entered data is incorrect. Please try again!")
