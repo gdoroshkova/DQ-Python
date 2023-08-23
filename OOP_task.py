@@ -124,7 +124,6 @@ class UserInteraction:
         # create object of DBConnection class, that is imported from task10_DB_API.py
         dbcon = DBConnection()
         for record in self.publications:
-            print(record)
             if record.publication_type == "News":
                 # call insert() method of DBConnection class, that inserted record (if it doesn't exist) to the table according to the fields
                 dbcon.insert('news', record.text, record.city, record.publication_date)
