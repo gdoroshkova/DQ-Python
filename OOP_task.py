@@ -113,16 +113,18 @@ class UserInteraction:
             # run through each record in the publication list
             for record in self.publications:
                 file.write(record.formatting() + "\n")
-        self.publications = []
-        print("Record is saved successfully!")
         self.stat_publ.create_csv_files()
         self.save_to_db()
+        self.publications = []
+        # print("Record is saved successfully!")
+
 
     # save_to_db() method saves the publications entered by user to DB
     def save_to_db(self):
         # create object of DBConnection class, that is imported from task10_DB_API.py
         dbcon = DBConnection()
         for record in self.publications:
+            print(record)
             if record.publication_type == "News":
                 # call insert() method of DBConnection class, that inserted record (if it doesn't exist) to the table according to the fields
                 dbcon.insert('news', record.text, record.city, record.publication_date)
@@ -131,11 +133,12 @@ class UserInteraction:
             elif record.publication_type == "Motivation":
                 dbcon.insert('motivations', record.text, record.audience, record.publication_date)
 
+
 if __name__ == '__main__':
     # Create object of UserInteraction class to interact with the UserInteraction methods and manage publications
     user_interaction = UserInteraction()
 
-    # Display the menu options repeatedly until the user selects to exit by selecting option '5'
+    # Display the menu options repeatedly until the user selects to exit by selecting option '4'
     while True:
         # Display the menu options to the user
         print("1. Add News")
@@ -148,15 +151,27 @@ if __name__ == '__main__':
         if menu_point == '1':
             publication_type = 'News'
             user_interaction.add_news()
-            user_interaction.save_publication()
+            try:
+                user_interaction.save_publication()
+                print("Record is saved successfully!")
+            except:
+                print("Error! Record isn't saved!")
         elif menu_point == '2':
             publication_type = 'Advertising'
             user_interaction.add_advertising()
-            user_interaction.save_publication()
+            try:
+                user_interaction.save_publication()
+                print("Error! Record isn't saved!")
+            except:
+                print("Error! Record isn't saved!")
         elif menu_point == '3':
             publication_type = 'Motivation'
             user_interaction.add_motivator()
-            user_interaction.save_publication()
+            try:
+                user_interaction.save_publication()
+                print("Record is saved successfully!")
+            except:
+                print("Error! Record isn't saved!")
         elif menu_point == '4':
             break
         else:
