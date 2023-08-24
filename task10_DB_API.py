@@ -8,12 +8,14 @@ class DBConnection:
                             'DATABASE=publications.db',
                             autocommit=True) as self.connection:
             self.cursor = self.connection.cursor()
+            self.create_tables()
 
-    def create_db(self):
-        self.cursor.execute('CREATE TABLE news (text text, city text, publication_date date)')
-        self.cursor.execute('CREATE TABLE advertising (text text, expiration_date date, left_days numeric)')
-        self.cursor.execute('CREATE TABLE motivations (text text, audience text, publication_date date)')
-        self.cursor.close()
+    def create_tables(self):
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS news (text text, city text, publication_date date)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS advertising (text text, expiration_date date, left_days "
+                            "numeric)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS motivations (text text, audience text, publication_date date)")
+        # self.cursor.close()
 
     def select(self, table_name):
         self.cursor.execute(f"SELECT * FROM {table_name}")
@@ -36,10 +38,10 @@ class DBConnection:
         result = self.cursor.fetchall()
         return result
 
-    def delete_tables(self):
-        self.cursor.execute("DROP TABLE motivations")
+    def delete_tables(self, table_name):
+        self.cursor.execute(f"DROP TABLE {table_name}")
 
-
-
-
-
+    def check_table_existing(self, table_name):
+        self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
+        result = self.cursor.fetchall()
+        return result
