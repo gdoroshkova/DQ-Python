@@ -116,12 +116,10 @@ class UserInteraction:
         self.stat_publ.create_csv_files()
         self.save_to_db()
         self.publications = []
-        # print("Record is saved successfully!")
 
 
     # save_to_db() method saves the publications entered by user to DB
     def save_to_db(self):
-        # create object of DBConnection class, that is imported from task10_DB_API.py
         dbcon = DBConnection()
         for record in self.publications:
             if record.publication_type == "News":
@@ -160,7 +158,7 @@ if __name__ == '__main__':
             user_interaction.add_advertising()
             try:
                 user_interaction.save_publication()
-                print("Error! Record isn't saved!")
+                print("Record is saved successfully!")
             except:
                 print("Error! Record isn't saved!")
         elif menu_point == '3':
